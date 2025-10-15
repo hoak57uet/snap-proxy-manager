@@ -1,0 +1,46 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <title>Snap Proxy Logo</title>
+    <desc>Shielded proxy route with layered network rings symbolising secure traffic relays.</desc>
+    <defs>
+        <linearGradient id="orbGradient" x1="58" y1="46" x2="206" y2="210" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#03E1FF"/>
+            <stop offset="1" stop-color="#8A2CFF"/>
+        </linearGradient>
+        <linearGradient id="shieldGradient" x1="88" y1="72" x2="168" y2="188" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.96"/>
+            <stop offset="1" stop-color="#C5C8FF" stop-opacity="0.85"/>
+        </linearGradient>
+        <linearGradient id="pathGradient" x1="76" y1="90" x2="196" y2="180" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#28F8FF"/>
+            <stop offset="1" stop-color="#A570FF"/>
+        </linearGradient>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="6" result="blur"/>
+            <feComposite in="blur" in2="SourceGraphic" operator="in"/>
+        </filter>
+    </defs>
+
+    <!-- Outer orb -->
+    <rect x="24" y="24" width="208" height="208" rx="104" fill="url(#orbGradient)"/>
+
+    <!-- Routing rings -->
+    <g stroke="rgba(255,255,255,0.35)" stroke-width="10" fill="none">
+        <path d="M64 134c0-36 28-66 64-66s64 30 64 66" opacity="0.7"/>
+        <path d="M56 154c0 36 32 66 72 66s72-30 72-66" opacity="0.55"/>
+    </g>
+
+    <!-- Proxy nodes -->
+    <g fill="#FFFFFF" opacity="0.9">
+        <circle cx="76" cy="118" r="6"/>
+        <circle cx="180" cy="104" r="5.5"/>
+        <circle cx="196" cy="168" r="6"/>
+        <circle cx="96" cy="186" r="5"/>
+    </g>
+
+    <!-- Shield core -->
+    <path d="M128 60c-28 10-52 14-52 14v52c0 46 30 86 52 98c22-12 52-52 52-98V74s-24-4-52-14z" fill="url(#shieldGradient)" opacity="0.96"/>
+
+    <!-- Forward proxy flow -->
+    <path d="M96 112h32l-9-10c-3-3-3-8 0-11s8-3 11 0l22 22c3 3 3 8 0 11l-22 22c-3 3-8 3-11 0s-3-8 0-11l9-10H96c-10 0-18 8-18 18c0 13 11 24 24 24h74" stroke="url(#pathGradient)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)" opacity="0.95"/>
+
+</svg>

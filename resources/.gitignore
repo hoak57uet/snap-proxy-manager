@@ -1,0 +1,5 @@
+# Ignore downloaded binaries
+bin/*
+
+# But keep the directory structure
+!bin/.gitkeep
