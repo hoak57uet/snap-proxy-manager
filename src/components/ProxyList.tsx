@@ -25,13 +25,14 @@ type ProxyPattern = 'pattern1' | 'pattern2' | 'pattern3';
 
 const PROXY_PATTERNS: Record<ProxyPattern, {
   label: string;
-  format: (proxy: ProxyConfig, useLan: boolean, formattedAddress: string) => string;
+  format: (proxy: ProxyConfig, useLan: boolean, formattedAddress: string, useSSL: boolean) => string;
   labelWithAddress: (proxy: ProxyConfig, useLan: boolean, formattedAddress: string) => string;
 }> = {
   pattern1: {
     label: 'protocol://username:password@ip:port',
-    format: (proxy: ProxyConfig, _useLan, formattedAddress) => {
-      const protocol = proxy.type.toLowerCase();
+    format: (proxy: ProxyConfig, _useLan, formattedAddress, useSSL) => {
+      const baseProtocol = proxy.type.toLowerCase();
+      const protocol = useSSL ? `${baseProtocol}s` : baseProtocol;
       const hasAuth = proxy.username && proxy.password;
       return hasAuth
         ? `${protocol}://${proxy.username}:${proxy.password}@${formattedAddress}:${proxy.port}`
@@ -50,8 +51,9 @@ const PROXY_PATTERNS: Record<ProxyPattern, {
   },
   pattern2: {
     label: 'protocol://username:password:ip:port',
-    format: (proxy: ProxyConfig, _useLan, formattedAddress) => {
-      const protocol = proxy.type.toLowerCase();
+    format: (proxy: ProxyConfig, _useLan, formattedAddress, useSSL) => {
+      const baseProtocol = proxy.type.toLowerCase();
+      const protocol = useSSL ? `${baseProtocol}s` : baseProtocol;
       const hasAuth = proxy.username && proxy.password;
       return hasAuth
         ? `${protocol}://${proxy.username}:${proxy.password}:${formattedAddress}:${proxy.port}`
@@ -70,8 +72,9 @@ const PROXY_PATTERNS: Record<ProxyPattern, {
   },
   pattern3: {
     label: 'protocol://ip:port:username:password',
-    format: (proxy: ProxyConfig, _useLan, formattedAddress) => {
-      const protocol = proxy.type.toLowerCase();
+    format: (proxy: ProxyConfig, _useLan, formattedAddress, useSSL) => {
+      const baseProtocol = proxy.type.toLowerCase();
+      const protocol = useSSL ? `${baseProtocol}s` : baseProtocol;
       const hasAuth = proxy.username && proxy.password;
       return hasAuth
         ? `${protocol}://${formattedAddress}:${proxy.port}:${proxy.username}:${proxy.password}`
@@ -166,7 +169,7 @@ export const ProxyList: React.FC<ProxyListProps> = ({
 
     const formatter = PROXY_PATTERNS[selectedPattern].format;
     const proxyList = displayData
-      .map((proxy) => formatter(proxy, useLanIP, formatAddress(proxy)))
+      .map((proxy) => formatter(proxy, useLanIP, formatAddress(proxy), useSSL))
       .join('\n');
 
     try {
@@ -202,6 +205,7 @@ export const ProxyList: React.FC<ProxyListProps> = ({
   };
 
   const [useLanIP, setUseLanIP] = useState<boolean>(false);
+  const [useSSL, setUseSSL] = useState<boolean>(true);
   const [detectedLanIP, setDetectedLanIP] = useState<string | null>(null);
   const [tableHeight, setTableHeight] = useState<number>(400);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -591,6 +595,14 @@ export const ProxyList: React.FC<ProxyListProps> = ({
                 style={{ flexShrink: 0 }}
               >
                 LAN IP
+              </Checkbox>
+              <Checkbox
+                checked={useSSL}
+                onChange={(event) => setUseSSL(event.target.checked)}
+                disabled={displayData.length === 0}
+                style={{ flexShrink: 0 }}
+              >
+                SSL
               </Checkbox>
               <Text type="secondary" style={{ flexShrink: 0, whiteSpace: 'nowrap' }}>
                 Total {total}
